@@ -14,7 +14,7 @@ namespace AutomationFramework.PageObjects
     //[TestFixture(BrowserType.Edge)]
     //[TestFixture(BrowserType.Firefox)]
     // [Parallelizable(ParallelScope.All)]
-    class TestCases
+    class MyTests
     {
 
         //public BrowserType browser;
@@ -35,7 +35,7 @@ namespace AutomationFramework.PageObjects
         string payeeOneName = "Everyday";
         string payeeTwoName = "Bill";
         string transfer_amount = "500";
-        string payeeNameText = "samplePayee123456";
+        string payeeNameText = "samplePayee12345";
         string transferSuccessMessage = "Transfer successful";
         string payeeAddSuccessMessage = "Payee added";
         string emptyPayeeNameErrorMessage = "A problem was found. Please correct the field highlighted below.";
@@ -43,24 +43,6 @@ namespace AutomationFramework.PageObjects
         string branchCode = "0398";
         string suffixCode = "000";
         string accountCode = "0246579";
-
-
-
-        public void AddNewPayee()
-        {
-            homePage.clickOnMenu();
-            menuPage.clickPayeeLink(); //TC1: Verify you can navigate to Payees
-            payeePage.clickAddBtn();   //TC1: Step 3 :Verify Payees page is loaded -Add Payee button is only visible if user click Payee link successfully
-            addpayeePage.fillPayeeName(payeeNameText);//TC2: step 3.Enter the payee details(name, account number)
-            addpayeePage.clickOnsuggestionLink(payeeNameText);
-            addpayeePage.fillBankCode(bankCode);
-            addpayeePage.fillBranchCode(branchCode);
-            addpayeePage.fillAccountCode(accountCode);
-            addpayeePage.fillSuffix(suffixCode);
-            addpayeePage.clickAddBtnInWindow();
-            Thread.Sleep(3000);
-            Assert.AreEqual(payeeAddSuccessMessage, payeePage.getAlertText());  
-        }
 
 
         [SetUp]
@@ -83,42 +65,47 @@ namespace AutomationFramework.PageObjects
         [Test]
         public void AddPayeeTest()
         {
-            AddNewPayee(); //TC2 step 5. ‘Payee added’ message is displayed, and payee is added in the list of payees
+            //homePage.openHomePage("https://www.demo.bnz.co.nz/client/");
+            AddNewPayee();
             Assert.IsTrue(payeePage.elementValidationInPage(payeeNameText));
         }
 
         [Test]
-        public void errorMessageValidationTest()
+        public void errorMessageValidation()
         {
+            //homePage.openHomePage("https://www.demo.bnz.co.nz/client/");
             homePage.clickOnMenu();
             menuPage.clickPayeeLink();
             payeePage.clickAddBtn();
             addpayeePage.clickAddBtnInWindow();
-            Assert.AreEqual(emptyPayeeNameErrorMessage, addpayeePage.getErrorMessage());//TC3 Step 4:validate errors
+            Assert.AreEqual(emptyPayeeNameErrorMessage, addpayeePage.getErrorMessage());
             addpayeePage.fillPayeeName(payeeNameText);
             addpayeePage.clickOnsuggestionLink(payeeNameText);
-            Assert.IsTrue(addpayeePage.isErrorMessageAvailable()==0); //TC3 Step 6. Validate errors are gone
+            Assert.IsTrue(addpayeePage.isErrorMessageAvailable()==0);
         }
 
         [Test]
-        public void sortingValidationTest()
+        public void sortingValidation()
         {
+            //homePage.openHomePage("https://www.demo.bnz.co.nz/client/");
             AddNewPayee();
-            Assert.IsTrue(isListSorted(payeePage.getPayeeList()));  //TC4:step 3: Verify list is sorted in ascending order by default
-            payeePage.clickNameTitle();                             //TC4:step 4: Click Name header
-            Assert.IsFalse(isListSorted(payeePage.getPayeeList())); //TC4:step 5: Verify list is sorted in descending order
+            Assert.IsTrue(isListSorted(payeePage.getPayeeList()));
+            payeePage.clickNameTitle();
+            Assert.IsFalse(isListSorted(payeePage.getPayeeList()));
 
         }
 
         [Test]
-        public void navigateToPaymentsPageTest()
+        public void navigateToPaymentsPage()
         {
+            //homePage.openHomePage("https://www.demo.bnz.co.nz/client/");
             string everydayOriginalAmount = getBalanceAmount(payeeOneName);
             string billOriginalAmount = getBalanceAmount(payeeTwoName);
 
 
             homePage.clickOnMenu();
-            menuPage.clickPayOrTransferLink();   //TC5: Step 1: Navigate to Payments page
+            menuPage.clickPayOrTransferLink();
+
             payTransPage.clickOnTransferFromBox();
             payTransPage.searchPayee(payeeOneName);
             payTransPage.selectTransferFromFirstItem();
@@ -126,21 +113,37 @@ namespace AutomationFramework.PageObjects
             payTransPage.searchPayee(payeeTwoName);
             payTransPage.selectTransferToFirstItem();
 
-            payTransPage.addTransferAmount(transfer_amount); //TC5: Step2: Transfer $500 from Everyday account to Bills account
+            payTransPage.addTransferAmount(transfer_amount);
             payTransPage.clickOnTransferBtn();
             Thread.Sleep(3000);
-            Assert.AreEqual(transferSuccessMessage, homePage.getTransferAlertText()); //TC5: Step3 : Transfer successful message is displayed
+            Assert.AreEqual(transferSuccessMessage, homePage.getTransferAlertText());
 
             string everydayNewAmount = getBalanceAmount(payeeOneName);
             string billNewAmount = getBalanceAmount(payeeTwoName);
 
-            Assert.IsFalse(everydayOriginalAmount == everydayNewAmount);  //TC5: Step4 : Verify the current balance of Everyday account and Bills account are correct 
+            Assert.IsFalse(everydayOriginalAmount == everydayNewAmount);
             Assert.IsFalse(billOriginalAmount == billNewAmount);
 
         }
 
 
-       
+        
+        public void AddNewPayee()
+        {
+            homePage.clickOnMenu();
+            menuPage.clickPayeeLink();
+            payeePage.clickAddBtn();
+            addpayeePage.fillPayeeName(payeeNameText);
+            addpayeePage.clickOnsuggestionLink(payeeNameText);
+            addpayeePage.fillBankCode(bankCode);
+            addpayeePage.fillBranchCode(branchCode);
+            addpayeePage.fillAccountCode(accountCode);
+            addpayeePage.fillSuffix(suffixCode);
+            addpayeePage.clickAddBtnInWindow();
+            Thread.Sleep(3000);
+            Assert.AreEqual(payeeAddSuccessMessage, payeePage.getAlertText());
+        }
+
 
         public string getBalanceAmount(string PayeeName)
         {
