@@ -88,7 +88,7 @@ namespace AutomationFramework.PageObjects
         }
 
         [Test]
-        public void errorMessageValidationTest()
+        public void ErrorMessageValidationTest()
         {
             homePage.clickOnMenu();
             menuPage.clickPayeeLink();
@@ -101,7 +101,7 @@ namespace AutomationFramework.PageObjects
         }
 
         [Test]
-        public void sortingValidationTest()
+        public void SortingValidationTest()
         {
             AddNewPayee();
             Assert.IsTrue(isListSorted(payeePage.getPayeeList()));  //TC4:step 3: Verify list is sorted in ascending order by default
@@ -111,7 +111,7 @@ namespace AutomationFramework.PageObjects
         }
 
         [Test]
-        public void navigateToPaymentsPageTest()
+        public void NavigateToPaymentsPageTest()
         {
             string everydayOriginalAmount = getBalanceAmount(payeeOneName);
             string billOriginalAmount = getBalanceAmount(payeeTwoName);
