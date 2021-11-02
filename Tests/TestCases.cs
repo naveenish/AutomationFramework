@@ -1,7 +1,10 @@
 ﻿using AutomationFramework.Tests;
+using Microsoft.Edge.SeleniumTools;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.IE;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,7 +55,7 @@ namespace AutomationFramework.PageObjects
             menuPage.clickPayeeLink(); //TC1: Verify you can navigate to Payees
             payeePage.clickAddBtn();   //TC1: Step 3 :Verify Payees page is loaded -Add Payee button is only visible if user click Payee link successfully
             addpayeePage.fillPayeeName(payeeNameText);//TC2: step 3.Enter the payee details(name, account number)
-            addpayeePage.clickOnsuggestionLink(payeeNameText);
+            //addpayeePage.clickOnsuggestionLink(payeeNameText);
             addpayeePage.fillBankCode(bankCode);
             addpayeePage.fillBranchCode(branchCode);
             addpayeePage.fillAccountCode(accountCode);
@@ -67,7 +70,11 @@ namespace AutomationFramework.PageObjects
         public void SetUp()
         {
 
-            driver = new ChromeDriver();
+              driver = new ChromeDriver();
+            //driver = new FirefoxDriver();
+            //driver = new InternetExplorerDriver();
+            //driver = new EdgeDriver();
+
             driver.Manage().Window.Maximize();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             menuPage = new MenuPage(driver);

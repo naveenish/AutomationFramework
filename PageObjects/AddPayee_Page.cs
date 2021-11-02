@@ -32,6 +32,7 @@ namespace AutomationFramework.PageObjects
         public void fillPayeeName(String name)
         {
             payeeNametxtbox.SendKeys(name);
+            payeeNametxtbox.SendKeys(Keys.Enter);
         }
 
         public void clickOnsuggestionLink(String name)
